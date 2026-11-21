@@ -1,0 +1,45 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/shengnan_platform?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: ${SP_DB_USERNAME:root}
+    password: ${SP_DB_PASSWORD:admin}
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      logic-delete-field: isDeleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      id-type: auto
+
+# 平台自定义配置
+platform:
+  jwt:
+    secret: ${SP_JWT_SECRET:shengnan-platform-jwt-secret-2026-please-change-in-production}
+    expiration-hours: 24
+  cookie:
+    # 本地 http 调试保持 false；正式部署启用 HTTPS 后务必改为 true
+    secure: false
+    # Lax 可拦截绝大多数跨站写请求（CSRF），同时不影响站内跳转携带 Cookie
+    same-site: Lax
+  upload:
+    dir: ./uploads
+  job:
+    script-timeout-seconds: 300
+
+logging:
+  level:
+    com.shengnan.platform: info

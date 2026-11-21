@@ -1,0 +1,38 @@
+# ============ 构建产物 ============
+backend/target/
+frontend/dist/
+**/*.jar
+**/*.war
+
+# ============ 依赖目录 ============
+frontend/node_modules/
+node_modules/
+
+# ============ 运行时数据 ============
+backend/uploads/*
+!backend/uploads/.gitkeep
+*.log
+logs/
+
+# ============ IDE / 编辑器 ============
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.settings/
+.classpath
+.project
+.factorypath
+
+# ============ 操作系统 ============
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ============ 其他 ============
+*.swp
+*.tmp
+*.bak
+.env
+.env.local
