@@ -21,8 +21,9 @@ request.interceptors.response.use(
   },
   error => {
     if (error.response?.status === 401) {
+      // 未登录/会话过期：静默跳登录页，不弹错误提示
       useUserStore().logout()
-      router.push('/login')
+      if (router.currentRoute.value.path !== '/login') router.push('/login')
     } else {
       ElMessage.error(error.response?.data?.message || error.message || '网络异常')
     }

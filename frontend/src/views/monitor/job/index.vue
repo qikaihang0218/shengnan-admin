@@ -112,7 +112,7 @@ const logVisible = ref(false), logs = ref([]), targets = ref([])
 const form = reactive({ jobName: '', jobGroup: 'DEFAULT', jobKind: 'bean', invokeTarget: '', scriptBody: '', cronExpr: '0 0 2 * * ?', allowConcurrent: false, isEnabled: true, description: '' })
 
 function kindLabel(k) { return { bean: 'Java方法', shell: 'Shell脚本', java: 'Java代码' }[k] || k }
-function kindTag(k) { return { bean: '', shell: 'warning', java: 'success' }[k] || '' }
+function kindTag(k) { return { bean: 'info', shell: 'warning', java: 'success' }[k] || 'info' }
 function brief(s) { if (!s) return '-'; const o = s.replace(/\s+/g, ' ').trim(); return o.length > 50 ? o.slice(0, 50) + '...' : o }
 
 async function load() {

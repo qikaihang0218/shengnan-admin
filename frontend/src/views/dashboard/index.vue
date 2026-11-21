@@ -15,12 +15,12 @@
     </div>
     <el-card class="welcome-card" style="margin-top:16px">
       <template #header><span>欢迎使用胜楠管理平台</span></template>
-      <p style="color:#606266;line-height:1.8">
+      <p class="welcome-text">
         这是一个独立实现的企业级权限管理系统。当前登录账号为
         <strong>{{ store.username }}</strong>，数据范围为
         <el-tag size="small">{{ scopeLabel }}</el-tag>。
       </p>
-      <p style="color:#909399;line-height:1.8;margin-top:8px">
+      <p class="welcome-text muted">
         左侧菜单由后端根据您的权限动态生成。可在「系统管理」中维护账号、角色、权限资源，
         在「系统监控」中查看日志、管理文件与定时任务。
       </p>
@@ -67,6 +67,10 @@ const cards = computed(() => [
   { title: '文件数', value: counts.value.files, icon: 'FolderOpened', color: '#909399' }
 ])
 
+function countNodes(nodes) {
+  return nodes.reduce((n, x) => n + 1 + countNodes(x.children || []), 0)
+}
+
 async function loadCounts() {
   try {
     const [a, r, p, f] = await Promise.all([
@@ -78,7 +82,7 @@ async function loadCounts() {
     counts.value = {
       accounts: a.data.total || 0,
       roles: (r.data || []).length,
-      permissions: (p.data || []).length,
+      permissions: countNodes(p.data || []),
       files: (f.data || []).length
     }
   } catch (e) { /* 统计加载失败不影响页面 */ }
@@ -93,12 +97,12 @@ onMounted(() => { loadCounts(); loadNotices() })
 <style scoped>
 .stat-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
   gap: 16px;
   width: 100%;
 }
-@media (max-width: 1200px) { .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 700px) { .stat-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 1200px) { .stat-grid { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); } }
+@media (max-width: 700px) { .stat-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; } }
 .stat-card { border-radius: 8px; min-width: 0; }
 .stat-inner { display: flex; align-items: center; gap: 12px; min-width: 0; }
 .stat-icon {
@@ -106,13 +110,20 @@ onMounted(() => { loadCounts(); loadNotices() })
   display: flex; align-items: center; justify-content: center; color: #fff;
 }
 .stat-value { font-size: 26px; font-weight: 600; }
-.stat-title { color: #909399; font-size: 13px; margin-top: 2px; }
+.stat-title { color: var(--el-text-color-secondary); font-size: 13px; margin-top: 2px; }
 .welcome-card { border-radius: 8px; }
-.notice-row { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
+.welcome-text { color: var(--el-text-color-regular); line-height: 1.8; }
+.welcome-text.muted { color: var(--el-text-color-secondary); margin-top: 8px; }
+.notice-row { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--el-border-color-lighter); flex-wrap: wrap; }
 .notice-row:last-child { border-bottom: none; }
-.notice-row-title { color: #303133; cursor: pointer; }
-.notice-row-title:hover { color: var(--el-color-primary, #409eff); }
-.notice-row-time { margin-left: auto; }
+.notice-row-title { color: var(--el-text-color-primary); cursor: pointer; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1 1 auto; }
+.notice-row-title:hover { color: var(--el-color-primary); }
+.notice-row-time { margin-left: auto; flex: 0 0 auto; }
 .notice-row-body { padding: 4px 12px 12px; margin-bottom: 8px; border-radius: 6px;
-  background: var(--el-fill-color-light, #f5f7fa); font-size: 13px; }
+  background: var(--el-fill-color-light); font-size: 13px; }
+@media (max-width: 700px) {
+  .stat-icon { width: 44px; height: 44px; border-radius: 10px; }
+  .stat-value { font-size: 22px; }
+  .notice-row-time { width: 100%; margin-left: 0; }
+}
 </style>

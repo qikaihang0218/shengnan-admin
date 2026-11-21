@@ -19,6 +19,11 @@ public class DepartmentController {
         return ApiResult.ok(service.search());
     }
 
+    /** 组织架构树（含 children），供账号页左侧树与部门表格使用 */
+    @GetMapping("/tree")
+    @PreAuthorize("hasAuthority('department:list')")
+    public ApiResult<?> tree() { return ApiResult.ok(service.tree()); }
+
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('department:list')")
     public ApiResult<Department> get(@PathVariable Long id) { return ApiResult.ok(service.getById(id)); }

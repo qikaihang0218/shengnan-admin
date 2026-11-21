@@ -23,7 +23,8 @@ const componentMap = {
   'monitor/login-log/index': () => import('../views/monitor/login-log/index.vue'),
   'monitor/operation-log/index': () => import('../views/monitor/operation-log/index.vue'),
   'monitor/job/index': () => import('../views/monitor/job/index.vue'),
-  'monitor/file/index': () => import('../views/monitor/file/index.vue')
+  'monitor/file/index': () => import('../views/monitor/file/index.vue'),
+  'repair/order/index': () => import('../views/repair/order/index.vue')
 }
 
 // 把后端菜单树转换成 Vue Router 路由：所有顶级菜单统一套 Layout 外壳
@@ -98,8 +99,9 @@ router.beforeEach(async (to, from) => {
   if (!routesLoaded) {
     const nodes = await store.loadRoutes()
     injectRoutes(nodes)
-    if (to.path === '/' || to.name === undefined) return { path: nodes[0]?.path || '/dashboard' }
-    return { ...to, replace: true }
+    // 路由刚注入，需按原目标重新解析一次；根路径则落到第一个菜单
+    if (to.path === '/') return { path: nodes[0]?.path || '/dashboard', replace: true }
+    return { path: to.fullPath, replace: true }
   }
   return true
 })

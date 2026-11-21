@@ -37,13 +37,16 @@ public class AccountService extends CrudService<AccountMapper, Account> {
     @Override protected AccountMapper mapper() { return mapper; }
 
     /** 数据权限过滤分页：all=全部, dept=本部门, dept_tree=本部门及以下, self=仅本人 */
-    public IPage<Account> pageWithScope(int pageNum, int pageSize, String keyword) {
+    public IPage<Account> pageWithScope(int pageNum, int pageSize, String keyword, Long departmentId) {
         LoginPrincipal me = currentUser();
         com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper<Account> q =
                 Wrappers.<Account>lambdaQuery();
         if (keyword != null && !keyword.trim().isEmpty()) {
             q.and(w -> w.like(Account::getUsername, keyword)
                     .or().like(Account::getDisplayName, keyword));
+        }
+        if (departmentId != null) {
+            q.in(Account::getDepartmentId, departmentTree(departmentId));
         }
         applyScope(q, me, "created_by");
         return mapper.selectPage(new Page<>(pageNum, pageSize), q.orderByDesc(Account::getId));

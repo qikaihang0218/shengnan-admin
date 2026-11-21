@@ -19,6 +19,17 @@ public class DictItemService extends CrudService<DictItemMapper, DictItem> {
         return mapper.selectList(Wrappers.<DictItem>lambdaQuery().orderByDesc(DictItem::getId));
     }
 
+    public List<DictItem> searchByType(Long typeId) {
+        return mapper.selectList(Wrappers.<DictItem>lambdaQuery()
+                .eq(DictItem::getTypeId, typeId)
+                .orderByAsc(DictItem::getSortNo)
+                .orderByAsc(DictItem::getId));
+    }
+
+    public void removeByType(Long typeId) {
+        mapper.delete(Wrappers.<DictItem>lambdaQuery().eq(DictItem::getTypeId, typeId));
+    }
+
     public void remove(Long id) {
         if (mapper.deleteById(id) == 0) throw new BusinessException("记录不存在");
     }

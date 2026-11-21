@@ -40,8 +40,24 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated()
             .and()
+            .exceptionHandling()
+                .authenticationEntryPoint(this::unauthorized)
+                .accessDeniedHandler((req, resp, ex) -> writeJson(resp, 403, "无访问权限"))
+            .and()
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+
+    private void unauthorized(javax.servlet.http.HttpServletRequest req,
+                              javax.servlet.http.HttpServletResponse resp,
+                              org.springframework.security.core.AuthenticationException ex) throws java.io.IOException {
+        writeJson(resp, 401, "未登录");
+    }
+
+    private void writeJson(javax.servlet.http.HttpServletResponse resp, int code, String message) throws java.io.IOException {
+        resp.setStatus(code);
+        resp.setContentType("application/json;charset=UTF-8");
+        resp.getWriter().write("{\"code\":" + code + ",\"message\":\"" + message + "\",\"data\":null}");
     }
 
     @Bean

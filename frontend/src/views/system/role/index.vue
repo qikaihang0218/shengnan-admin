@@ -5,17 +5,17 @@
     </div>
     <div class="table-wrap">
       <el-table :data="list" v-loading="loading" border stripe size="small">
-        <el-table-column prop="id" label="ID" width="70" />
-        <el-table-column prop="roleName" label="角色名称" width="150" />
-        <el-table-column prop="roleCode" label="角色编码" width="150" />
-        <el-table-column label="数据范围" width="140">
+        <el-table-column prop="id" label="ID" width="60" />
+        <el-table-column prop="roleName" label="角色名称" width="130" />
+        <el-table-column prop="roleCode" label="角色编码" width="130" />
+        <el-table-column label="数据范围" width="130">
           <template #default="{ row }">
             <el-tag size="small">{{ scopeLabel(row.dataScope) }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="sortNo" label="排序" width="80" />
+        <el-table-column prop="sortNo" label="排序" width="70" />
         <el-table-column prop="description" label="说明" min-width="160" />
-        <el-table-column label="操作" width="240" fixed="right">
+        <el-table-column label="操作" width="215" fixed="right">
           <template #default="{ row }">
             <el-button v-if="store.hasPerm('role:grant')" link type="warning" size="small" @click="openGrant(row)">分配权限</el-button>
             <el-button v-if="store.hasPerm('role:update')" link type="primary" size="small" @click="openEdit(row)">编辑</el-button>

@@ -13,6 +13,8 @@ backend/uploads/*
 !backend/uploads/.gitkeep
 *.log
 logs/
+*.err
+*.out
 
 # ============ IDE / 编辑器 ============
 .idea/

@@ -21,8 +21,9 @@ public class AccountController {
     @PreAuthorize("hasAuthority('account:list')")
     public ApiResult<PageResult<Account>> list(@RequestParam(defaultValue = "1") int pageNum,
                                                @RequestParam(defaultValue = "10") int pageSize,
-                                               @RequestParam(required = false) String keyword) {
-        return ApiResult.ok(PageResult.of(service.pageWithScope(pageNum, pageSize, keyword)));
+                                               @RequestParam(required = false) String keyword,
+                                               @RequestParam(required = false) Long departmentId) {
+        return ApiResult.ok(PageResult.of(service.pageWithScope(pageNum, pageSize, keyword, departmentId)));
     }
 
     @GetMapping("/options")

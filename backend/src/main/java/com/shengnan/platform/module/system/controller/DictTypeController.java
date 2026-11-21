@@ -14,8 +14,7 @@ public class DictTypeController {
 
     @GetMapping("/list")
     @PreAuthorize("hasAuthority('dict:list')")
-    public ApiResult<?> list(@RequestParam(defaultValue="1") int pageNum,
-                             @RequestParam(defaultValue="1000") int pageSize) {
+    public ApiResult<?> list() {
         return ApiResult.ok(service.search());
     }
 

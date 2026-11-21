@@ -14,9 +14,8 @@ public class DictItemController {
 
     @GetMapping("/list")
     @PreAuthorize("hasAuthority('dict:list')")
-    public ApiResult<?> list(@RequestParam(defaultValue="1") int pageNum,
-                             @RequestParam(defaultValue="1000") int pageSize) {
-        return ApiResult.ok(service.search());
+    public ApiResult<?> list(@RequestParam(required = false) Long typeId) {
+        return ApiResult.ok(typeId != null ? service.searchByType(typeId) : service.search());
     }
 
     @GetMapping("/{id}")

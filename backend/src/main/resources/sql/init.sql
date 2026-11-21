@@ -398,7 +398,9 @@ INSERT INTO sp_permission (id, parent_id, resource_name, resource_type, route_pa
 (110602, 1106, '维护字典', 'action', '', '', '', 'dict:write', 2, 0, 1),
 (1107, 1100, '系统参数', 'menu', 'config', 'system/config/index', 'Tools', 'config:list', 7, 1, 1),
 (110701, 1107, '查询参数', 'action', '', '', '', 'config:list', 1, 0, 1),
-(110702, 1107, '修改参数', 'action', '', '', '', 'config:update', 2, 0, 1),
+(110702, 1107, '新增参数', 'action', '', '', '', 'config:create', 2, 0, 1),
+(110703, 1107, '修改参数', 'action', '', '', '', 'config:update', 3, 0, 1),
+(110704, 1107, '删除参数', 'action', '', '', '', 'config:delete', 4, 0, 1),
 -- 通知公告
 (1108, 1100, '通知公告', 'menu', 'notice', 'system/notice/index', 'Bell', 'notice:list', 8, 1, 1),
 (110801, 1108, '查询通知', 'action', '', '', '', 'notice:list', 1, 0, 1),
