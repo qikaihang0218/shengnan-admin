@@ -39,6 +39,18 @@ platform:
     dir: ./uploads
   job:
     script-timeout-seconds: 300
+  # 自定义 SQL：改脚本不用改代码、不用重编译，重启后自动执行
+  sql:
+    # 总开关，生产可设为 false 关掉自动执行
+    enabled: true
+    # 外部脚本目录（相对启动目录），支持多个候选，逗号分隔；改完重启即生效
+    script-dir: ./sql,../sql
+    # 内置脚本目录（打进 jar），一般放随代码发布的基础脚本
+    classpath-dir: sql/migration
+    # 已执行过的脚本内容被改动时是否中断启动（true 更安全，防止静默漏执行）
+    fail-on-checksum-mismatch: true
+    # 任一脚本失败是否中断启动
+    fail-fast: true
 
 logging:
   level:
